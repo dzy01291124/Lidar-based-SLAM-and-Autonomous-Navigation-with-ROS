@@ -1,0 +1,44 @@
+<launch>
+
+    <!-- <node name="static_transform_publisher" pkg="tf" type="static_transform_publisher" /> -->
+        <!-- <param name="publish_frequency" type="double" value="10.0" /> -->
+    <!-- <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping"/>  -->
+    <node pkg="amcl" type="amcl" name="amcl"/>
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find nav_pkg)/map/test.yaml"/> 
+    <node pkg="move_base" type="move_base" name="move_base" respawn="false">
+        <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+        <param name="dwa_local_planner" value="dwa_local_planner/DWAPlannerROS"/>
+
+        <rosparam file="$(find nav_pkg)/config/base_global_planner_params.yaml" command="load" clear_params="true"/> 
+        <rosparam file="$(find nav_pkg)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find nav_pkg)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find nav_pkg)/config/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find nav_pkg)/config/global_costmap_params.yaml" command="load" />
+    </node>
+    <node pkg="tf" type="static_transform_publisher" name="map2odom" args="0 0 0 0 0 0 /map /odom 100"/> 
+    <node pkg="tf" type="static_transform_publisher" name="bl2scanner" args="0 0 0.9 0 0 0 /base_link /scanner_link 100"/> 
+    <node pkg="tf" type="static_transform_publisher" name="bl2Charging_board" args="-0.51 0 0.3 0 0 0 /base_link /Charging_board 100"/> 
+    <node pkg="tf" type="static_transform_publisher" name="bl2IMU" args="0.35 0 0.75 0 0 0 /base_link /imu_link 100"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find scan_pkg)/rviz/hector_out_map.rviz"/>
+
+    <!-- 设置移动底盘参数 -->
+    <!-- <param name="base_controller/cmd_vel_timeout" value="5.0"/>
+    <param name="base_controller/configuration_namespace" value="twist_controller"/>
+    <param name="twist_controller/linear_velocity_pid/p" value="10"/>
+    <param name="twist_controller/linear_velocity_pid/i" value="0"/>
+    <param name="twist_controller/linear_velocity_pid/d" value="10"/>
+    <param name="twist_controller/angular_velocity_pid/p" value="10"/>
+    <param name="twist_controller/angular_velocity_pid/i" value="0"/>
+    <param name="twist_controller/angular_velocity_pid/d" value="10"/>
+
+    <param name="base_controller/cmd_vel_timeout" value="5.0"/>
+    <param name="base_controller/configuration_namespace" value="diff_drive_controller"/>
+    <param name="diff_drive_controller/wheel_accel_limit" value="2.0"/>
+    <param name="diff_drive_controller/wheel_track" value="0.5"/>
+    <param name="diff_drive_controller/wheel_diameter" value="0.2"/>
+    <param name="diff_drive_controller/wheel_velocity_publisher" value="true"/> -->
+
+    <include file="$(find yocs_velocity_smoother)/launch/standalone.launch"/>
+    <include file="$(find robot_pose_ekf)/robot_pose_ekf.launch"/>
+    <include file="$(find miiboo_imu)/launch/imu.launch"/>
+</launch>

@@ -1,0 +1,20 @@
+global_costmap:
+   global_frame: map
+   robot_base_frame: base_footprint
+   update_frequency: 5
+   publish_frequency: 2
+  #  static_map: true
+   # rolling_window: false
+   # track_unknown_space: true
+
+   
+# #全局规划只引入静态层，不引入障碍层
+   # plugins: 
+   #   - {name: static_layer, type: "costmap_2d::StaticLayer"}
+   #   - {name: inflation_layer,type: "costmap_2d::InflationLayer"}
+#    inflation_layer:
+#      inflation_radius: 1.0
+
+   plugins: 
+      - {name: static_map,       type: "costmap_2d::StaticLayer"}
+      - {name: inflation_layer,  type: "costmap_2d::InflationLayer"}

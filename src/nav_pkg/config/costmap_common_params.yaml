@@ -1,0 +1,31 @@
+obstacle_range: 1.5 # "<" this value will be marked as obstacles, ">" it will be unmarked if "clearing" is enable
+raytrace_range: 1.5 #this value used to clear inner-range's marked un-known area if "clearing" is enable
+#footprint: [[0.8, 0.8], [0.8, -0.8], [-0.8, -0.8], [-0.8, 0.8]]
+#footprint_inflation: 0.01
+footprint: [[0.48, 0.40], [0.48, -0.40], [-0.52, -0.40], [-0.52, 0.40]]
+# robot_radius: 0.6   #for tb 0.18; dsr 0.28
+inflation_radius: 0.5 #for tb 0.28; dsr 0.38
+# max_obstacle_height: 1.5
+#min_obstacle_height: 0.0
+
+#laser_scan_sensor: {sensor_frame: scanner_link, data_type:LaserScan, topic: /scan, marking: true, clearing: true}
+
+resolution: 0.1
+
+#inscribed_radius: 0.27 #for tb 0.17; dsr 0.26
+#circumscribed_radius: 0.25 #for tb 0.18; dsr 0.30
+
+
+transform_tolerance: 20
+# map_type: costmap 
+obstacles:
+  observation_sources: Lscan  #rgbd
+  Lscan: {data_type: LaserScan, sensor_frame: scan_link, marking: true, clearing: true, topic: /scan}
+
+# obstacles:
+#     observation_sources: base_scan
+#     base_scan: {data_type: LaserScan, sensor_frame: /base_laser_link, clearing: true, marking: true, topic: /base_scan}
+  
+#scan: {data_type: scanner_link, topic: /scan, marking: true, clearing: true}
+#rgbd: {data_type: PointCloud2, topic: /camera/depth/points, marking: true, clearing: false}
+#obstacle_layer/combination_method: 2 # added by wyj, 2->updateWithOverwrite_w(), 0->updateWithOverwrite()
